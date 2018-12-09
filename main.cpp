@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "testTree.h"
 #include "node.h"
+#include "st.h"
 
 void invokeParserFromFile(char* fileName);
 
@@ -14,6 +15,7 @@ int main (int argc, char* argv[]) {
     } else if (argc == 1){
         Node* node = parser(stdin);
         traversePreorder(node);
+        checkVarsInTree(node);
     } else {
         printf("A sourcefile is requred as an argument. No additional arguments are allowed.\n");
         return 1;
@@ -36,6 +38,7 @@ void invokeParserFromFile(char* fileName){
     // printf("Reading: %s\n", sourceFileName);
     Node* node = parser(sourceFile);
     traversePreorder(node);
+    checkVarsInTree(node);
 
     fclose(sourceFile);
 }
