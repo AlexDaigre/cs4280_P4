@@ -4,6 +4,6 @@
     #include <set> 
     #include "node.h"
 
-    void  checkVarsInTree(Node* node);
+    void checkVarsInTree(Node* node);
 
 #endif

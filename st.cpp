@@ -27,22 +27,22 @@ void checkVarsInTree(Node* node){
         return; 
     }
 
-    if (strcmp(node->nodeType, (char*)"vars") == 0){
+    if (node->nodeType == eVars){
         if (insert(node->token0.tokenInstance) < 0){
             printf("Line %d: Variable already initialised.\n", node->token0.lineNum);
             return;
         }
-    } else if (strcmp(node->nodeType, (char*)"R") == 0){
+    } else if (node->nodeType == eR){
         if (verify(node->token0.tokenInstance) < 0){
             printf("Line %d: Variable not declaired.\n", node->token0.lineNum);
             return;
         }
-    } else if (strcmp(node->nodeType, (char*)"in") == 0){
+    } else if (node->nodeType == eIn){
         if (verify(node->token0.tokenInstance) < 0){
             printf("Line %d: Variable not declaired.\n", node->token0.lineNum);
             return;
         }
-    } else if (strcmp(node->nodeType, (char*)"assign") == 0){
+    } else if (node->nodeType == eAssign){
         if (verify(node->token0.tokenInstance) < 0){
             printf("Line %d: Variable not declaired.\n", node->token0.lineNum);
             return;

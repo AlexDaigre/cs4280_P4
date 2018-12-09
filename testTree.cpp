@@ -19,7 +19,7 @@ using namespace std;
             return; 
         }
 
-        cout << getSpacesFromInt(level) << node->nodeType
+        cout << getSpacesFromInt(level) << getNodeTokenName(node->nodeType)
             << ": " << getTokenName(node->token0.tokenId) 
             << "/" << node->token0.tokenInstance
             << ": " << getTokenName(node->token1.tokenId) 
@@ -42,7 +42,7 @@ using namespace std;
         postOrderRecursiveBody(node->child1, ++level);
         postOrderRecursiveBody(node->child2, ++level); 
         postOrderRecursiveBody(node->child3, ++level);
-        cout << getSpacesFromInt(level) << node->nodeType
+        cout << getSpacesFromInt(level) << getNodeTokenName(node->nodeType)
             << ": " << getTokenName(node->token0.tokenId) 
             << "/" << node->token0.tokenInstance
             << ": " << getTokenName(node->token1.tokenId) 

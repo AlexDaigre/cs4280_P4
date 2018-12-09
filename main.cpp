@@ -6,6 +6,7 @@
 #include "testTree.h"
 #include "node.h"
 #include "st.h"
+#include "codeGenerator.h"
 
 void invokeParserFromFile(char* fileName);
 
@@ -16,6 +17,7 @@ int main (int argc, char* argv[]) {
         Node* node = parser(stdin);
         traversePreorder(node);
         checkVarsInTree(node);
+        generateCode(node);
     } else {
         printf("A sourcefile is requred as an argument. No additional arguments are allowed.\n");
         return 1;
@@ -39,6 +41,7 @@ void invokeParserFromFile(char* fileName){
     Node* node = parser(sourceFile);
     traversePreorder(node);
     checkVarsInTree(node);
+    generateCode(node);
 
     fclose(sourceFile);
 }
