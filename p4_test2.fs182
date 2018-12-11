@@ -1,6 +1,6 @@
 void
 var x : 11
 start
-  let x = 11 :
+  let x = 11 .
   out [ x ] .
 stop

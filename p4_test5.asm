@@ -1,0 +1,6 @@
+LOAD 5
+MULT -1
+MULT -1
+MULT -1
+STORE tempVar
+WRITE tempVar
