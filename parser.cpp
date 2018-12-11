@@ -170,7 +170,7 @@ Node* R(){
         node->token0 = newToken;
         newToken = getNextToken(sourceFile);
     } else if (newToken.tokenId == intTk){
-        node->token1 = newToken;
+        node->token0 = newToken;
         newToken = getNextToken(sourceFile);
     } else {
         error((char*)"(, Identifier, or Integer");

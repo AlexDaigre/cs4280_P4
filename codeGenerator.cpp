@@ -104,7 +104,7 @@ void generateExpr (Node * node){
         char* tempVar = createTempVar();
         fprintf(targetFile, "STORE %s\n", tempVar);
         generateA(node->child0);
-        if (node->token0.tokenInstance == (char*)"/") {
+        if (strcmp(node->token0.tokenInstance, (char*)"/") == 0) {
             fprintf(targetFile, "DIV %s\n", tempVar);
             return;
         } else {
@@ -127,7 +127,7 @@ void generateA (Node * node) {
         char* tempVar = createTempVar();
         fprintf(targetFile, "STORE %s\n", tempVar);
         generateM(node->child0);
-        if (node->token0.tokenInstance == (char*)"+") {
+        if (strcmp(node->token0.tokenInstance, (char*)"+") == 0) {
             fprintf(targetFile, "ADD %s\n", tempVar);
             return;
         } else {
@@ -162,11 +162,11 @@ void generateR (Node * node){
     if(node->child0 != NULL){
         generateExpr(node->child0);
         return;
-    } else if (node->child0->token0.tokenId == idTk) {
-        fprintf(targetFile, "LOAD %s\n", node->child0->token0.tokenInstance);
+    } else if (node->token0.tokenId == idTk) {
+        fprintf(targetFile, "LOAD %s\n", node->token0.tokenInstance);
         return;
-    } else if (node->child0->token0.tokenId == intTk) {
-        fprintf(targetFile, "LOAD %s\n", node->child0->token0.tokenInstance);
+    } else if (node->token0.tokenId == intTk) {
+        fprintf(targetFile, "LOAD %s\n", node->token0.tokenInstance);
         return;
     }
 }
@@ -251,16 +251,16 @@ void generateIfGram (Node * node){
         fprintf(targetFile, "BRNEG %s\n", label);
     }  else if ((strcmp(node->child1->token0.tokenInstance, "=") == 0) && (strcmp(node->child1->token1.tokenInstance, "=") == 0)){
         fprintf(targetFile, "BRZERO %s\n", label);
-    }else if (strcmp(node->child1->token0.tokenInstance, "<") == 0){
+    } else if (strcmp(node->child1->token0.tokenInstance, "<") == 0){
         fprintf(targetFile, "BRZPOS %s\n", label);
     } else if (strcmp(node->child1->token0.tokenInstance,  ">") == 0){
         fprintf(targetFile, "BRZNEG %s\n", label);
     }  else if (strcmp(node->child1->token0.tokenInstance, "=") == 0){ 
         fprintf(targetFile, "BRNEG %s\n", label);
         fprintf(targetFile, "BRPOS %s\n", label);
-    }
+    } 
     generateStat(node->child3);
-    fprintf(targetFile, "LN: NOOP\n", label);
+    fprintf(targetFile, "%s: NOOP\n", label);
     return;
 }
 
@@ -314,5 +314,5 @@ char* createLabel(){
 }
 
 void createVar(char* code){
-    
+
 }
