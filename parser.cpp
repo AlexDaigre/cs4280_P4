@@ -144,14 +144,15 @@ Node* A(){
 Node* M(){
     Node* node = new Node;
     node->nodeType = eM;
-    if (newToken.tokenId == opDelTk && (strcmp(newToken.tokenInstance, "-") == 0)){
+    if ((newToken.tokenId == opDelTk) && (strcmp(newToken.tokenInstance, "-") == 0)){
         node->token0 = newToken;
         newToken = getNextToken(sourceFile);
         node->child0 = M();
+        return node;
     } else {
         node->child0 = R();
+        return node;
     }
-    return node;
 }
 
 Node* R(){
@@ -162,6 +163,7 @@ Node* R(){
         node->child0 = expr();
         if (newToken.tokenId == opDelTk && (strcmp(newToken.tokenInstance, ")") == 0)){
             newToken = getNextToken(sourceFile);
+            return node;
         } else {
             error((char*)")");
             return NULL;
@@ -169,9 +171,11 @@ Node* R(){
     } else if (newToken.tokenId == idTk){
         node->token0 = newToken;
         newToken = getNextToken(sourceFile);
+        return node;
     } else if (newToken.tokenId == intTk){
         node->token0 = newToken;
         newToken = getNextToken(sourceFile);
+        return node;
     } else {
         error((char*)"(, Identifier, or Integer");
         return NULL;
