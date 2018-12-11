@@ -1,4 +1,5 @@
-Global
+Storage == Global
 
-Prints an error message if a problem is detected with the variables.
-Some error is causing a line 0 error. Not sure why this is happening, but that output can be ignored.
+Some errors appear when checking static sematics. 
+I am unsure why this has appeared since the static semantis project.
+The errors do not affect the code generation or any other part of the project.
