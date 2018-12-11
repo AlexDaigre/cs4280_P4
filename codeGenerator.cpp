@@ -7,9 +7,9 @@ FILE* targetFile;
 
 void preOrderRecursiveBodyCodeGeneration(Node* node, int level);
 
-void print2Target (char* code);
 void createVar(char* code);
 char* createTempVar();
+char* createLabel();
 
 void generateProgram (Node * node);
 void generateBlock (Node * node);
@@ -91,13 +91,9 @@ void generateVars (Node * node){
     if (node == NULL) {
         return; 
     }
-
-    if (node->child0 == NULL) {
-        return;
-    } else {
-        createVar(node->token0.tokenInstance);
-        return;
-    }
+    
+    createVar(node->token0.tokenInstance);
+    return;
 }
 
 void generateExpr (Node * node){
@@ -153,9 +149,11 @@ void generateM (Node * node){
     }
     if(node->child0->nodeType == eR){
         generateR(node->child0);
+        return;
     } else {
         generateM(node->child0);
         fprintf(targetFile, "MULT -1\n");
+        return;
     }
 }
 
@@ -165,10 +163,13 @@ void generateR (Node * node){
     }
     if(node->child0 != NULL){
         generateExpr(node->child0);
+        return;
     } else if (node->child0->token0.tokenId == idTk) {
-        fprintf(targetFile, "Load %s", node->child0->token0.tokenInstance);
+        fprintf(targetFile, "LOAD %s\n", node->child0->token0.tokenInstance);
+        return;
     } else if (node->child0->token0.tokenId == intTk) {
-        fprintf(targetFile, "Load %s", node->child0->token0.tokenInstance);
+        fprintf(targetFile, "LOAD %s\n", node->child0->token0.tokenInstance);
+        return;
     }
 }
 
@@ -177,6 +178,9 @@ void generateStats (Node * node){
         return; 
     }
 
+    generateStat(node->child0);
+    generateMStat(node->child1);
+    return;
 }
 
 void generateMStat (Node * node){
@@ -184,34 +188,82 @@ void generateMStat (Node * node){
         return; 
     }
 
+    generateStat(node->child0);
+    generateMStat(node->child1);
+    return;
 }
 
 void generateStat (Node * node){
     if (node == NULL) {
         return; 
     }
-
+    if (node->child0->nodeType == eIn){
+        generateIn(node->child0);
+        return;
+    } else if (node->child0->nodeType == eOut){
+        generateOut(node->child0);
+        return;
+    } else if (node->child0->nodeType == eBlock){
+        generateBlock(node->child0);
+        return;
+    } else if (node->child0->nodeType == eIfGram){
+        generateIfGram(node->child0);
+        return;
+    } else if (node->child0->nodeType == eLoop){
+        generateLoop(node->child0);
+        return;
+    } else if (node->child0->nodeType == eAssign){
+        generateAssign(node->child0);
+        return;
+    }
 }
 
 void generateIn (Node * node){
     if (node == NULL) {
         return; 
     }
-
+    fprintf(targetFile, "READ %s\n", node->token0.tokenInstance);
+    return;
 }
 
 void generateOut (Node * node){
     if (node == NULL) {
         return; 
     }
-
+    generateExpr(node->child0);
+    char* tempVar = createTempVar();
+    fprintf(targetFile, "STORE %s\n", tempVar);
+    fprintf(targetFile, "WRITE %s\n", tempVar);
+    return;
 }
 
 void generateIfGram (Node * node){
     if (node == NULL) {
         return; 
     }
-
+    generateExpr(node->child2);
+    char* tempVar = createTempVar();
+    fprintf(targetFile, "STORE %s\n", tempVar);
+    generateExpr(node->child0);
+    fprintf(targetFile, "SUB %s\n", tempVar);
+    char* label = createLabel();
+    if ((strcmp(node->child1->token0.tokenInstance, "<") == 0) && (strcmp(node->child1->token1.tokenInstance, "=") == 0)){
+        fprintf(targetFile, "BRZNEG %s\n", label);
+    } else if ((strcmp(node->child1->token0.tokenInstance,  ">") == 0) && (strcmp(node->child1->token1.tokenInstance, "=") == 0)){
+        fprintf(targetFile, "BRPOS %s\n", label);
+    }  else if ((strcmp(node->child1->token0.tokenInstance, "=") == 0) && (strcmp(node->child1->token1.tokenInstance, "=") == 0)){
+        fprintf(targetFile, "BRNEG %s\n", label);
+        fprintf(targetFile, "BRPOS %s\n", label);
+    }else if (strcmp(node->child1->token0.tokenInstance, "<") == 0){
+        fprintf(targetFile, "BRNEG %s\n", label);
+    } else if (strcmp(node->child1->token0.tokenInstance,  ">") == 0){
+        fprintf(targetFile, "BRPOS %s\n", label);
+    }  else if (strcmp(node->child1->token0.tokenInstance, "=") == 0){
+        fprintf(targetFile, "BRZERO %s\n", label);
+    }
+    generateStat(node->child3);
+    fprintf(targetFile, "LN: NOOP\n", label);
+    return;
 }
 
 void generateLoop (Node * node){
@@ -236,5 +288,9 @@ void generateRO (Node * node){
 }
 
 char* createTempVar(){
-    return (char*)"x";
+    return (char*)"tempVar";
+}
+
+char* createLabel(){
+    return (char*)"label";
 }
