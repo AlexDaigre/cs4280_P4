@@ -1,0 +1,14 @@
+READ 
+LOAD 0
+STORE v0
+LOAD x
+SUB v0
+BRZNEG l0
+LOAD x
+STORE v1
+WRITE v1
+l0: NOOP
+STOP
+x: 0
+v0: 0
+v1: 0

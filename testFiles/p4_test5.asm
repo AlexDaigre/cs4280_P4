@@ -2,5 +2,7 @@ LOAD 5
 MULT -1
 MULT -1
 MULT -1
-STORE tempVar
-WRITE tempVar
+STORE v0
+WRITE v0
+STOP
+v0: 0

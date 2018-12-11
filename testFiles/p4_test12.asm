@@ -1,0 +1,19 @@
+READ 
+READ 
+READ 
+LOAD y
+STORE v0
+WRITE v0
+LOAD z
+STORE v1
+WRITE v1
+LOAD x
+STORE v2
+WRITE v2
+STOP
+x: 0
+y: 0
+z: 0
+v0: 0
+v1: 0
+v2: 0

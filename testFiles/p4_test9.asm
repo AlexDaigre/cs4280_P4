@@ -1,0 +1,21 @@
+READ 
+LOAD 1
+STORE v0
+LOAD x
+SUB v0
+BRNEG l0
+LOAD 10
+STORE v1
+LOAD x
+SUB v1
+BRPOS l1
+LOAD x
+STORE v2
+WRITE v2
+l1: NOOP
+l1: NOOP
+STOP
+x: 0
+v0: 0
+v1: 0
+v2: 0

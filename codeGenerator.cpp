@@ -44,6 +44,7 @@ void generateCode(Node* node) {
             return; 
         }
         generateProgram(node);
+        fprintf(targetFile, "STOP\n");
         printVarsToFile();
 }
 

@@ -30,6 +30,7 @@ SUB v4
 STORE x
 BR l3
 l3: NOOP
+STOP
 x: 0
 y: 0
 v0: 0
