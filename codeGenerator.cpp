@@ -26,7 +26,6 @@ void generateOut (Node * node);
 void generateIfGram (Node * node);
 void generateLoop (Node * node);
 void generateAssign (Node * node);
-void generateRO (Node * node);
 
 void generateCode(Node* node) {
         std::cout << "Starting Code Generation:\n";
@@ -58,7 +57,6 @@ void generateCode(Node* node) {
 //         case eIfGram: generateIfGram(node); break;
 //         case eLoop: generateLoop(node); break;
 //         case eAssign: generateAssign(node); break;
-//         case eRO: generateRO(node); break;
 //     }
 
 //     preOrderRecursiveBodyCodeGeneration(node->child0, ++level); 
@@ -302,14 +300,9 @@ void generateAssign (Node * node){
     if (node == NULL) {
         return; 
     }
-
-}
-
-void generateRO (Node * node){
-    if (node == NULL) {
-        return; 
-    }
-
+    generateExpr(node->child0);
+    fprintf(targetFile, "STORE %s\n", node->token0.tokenInstance);
+    return;
 }
 
 char* createTempVar(){
