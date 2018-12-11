@@ -5,9 +5,20 @@
 
 FILE* targetFile;
 
+int varCounter = 0;
+char newVar[9];
+
+int labelCounter = 0;
+char newLabel[9];
+
+char* createdVars[1000];
+int createdVarsCounter = 0;
+
 void createVar(char* code);
 char* createTempVar();
 char* createLabel();
+
+void printVarsToFile();
 
 void generateProgram (Node * node);
 void generateBlock (Node * node);
@@ -32,8 +43,8 @@ void generateCode(Node* node) {
         if (node == NULL) {
             return; 
         }
-        
         generateProgram(node);
+        printVarsToFile();
 }
 
 void generateProgram (Node * node){
@@ -60,9 +71,8 @@ void generateVars (Node * node){
     if (node == NULL) {
         return; 
     }
-    // if (strcmp(getTokenDescription(node->token0.tokenId), (char*)"NULL") != 0){
-        createVar(node->token0.tokenInstance);
-    // }
+    createVar(node->token0.tokenInstance);
+    generateVars(node->child0);
     return;
 }
 
@@ -118,8 +128,6 @@ void generateM (Node * node){
         return; 
     }
     
-    // printNode(node);
-    // printNode(node->child0);
     if(node->child0->nodeType == eR){
         generateR(node->child0);
         return;
@@ -284,15 +292,39 @@ void generateAssign (Node * node){
 }
 
 char* createTempVar(){
-    return (char*)"tempVar";
+    sprintf(newVar, "v%d", varCounter);
+    varCounter++;
+    return newVar;
 }
 
 char* createLabel(){
-    return (char*)"label";
+    sprintf(newLabel, "l%d", labelCounter);
+    labelCounter++;
+    return newLabel;
 }
 
 void createVar(char* code){
+    createdVars[createdVarsCounter] = code;
+    createdVarsCounter++;
+    return;
+}
 
+void printVarsToFile(){
+    int i;
+    for(i = 0; i < createdVarsCounter; i++){
+        fprintf(targetFile, "%s", createdVars[i]);
+        fprintf(targetFile, ": 0\n");
+    }
+    for(i = 0; i < varCounter; i++){
+        sprintf(newVar, "v%d", i);
+        fprintf(targetFile, "%s", newVar);
+        fprintf(targetFile, ": 0\n");
+    }
+    // for(i = 0; i < labelCounter; i++){
+    //     sprintf(newLabel, "l%d", i);
+    //     fprintf(targetFile, "%s", newLabel);
+    //     fprintf(targetFile, "\n");
+    // }
 }
 
 void printNode (Node * node){
@@ -304,4 +336,5 @@ void printNode (Node * node){
     << ": " << getTokenName(node->token2.tokenId) 
     << "/" << node->token2.tokenInstance
     << "\n";
+    return;
 }
