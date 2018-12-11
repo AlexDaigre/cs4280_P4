@@ -312,3 +312,7 @@ char* createTempVar(){
 char* createLabel(){
     return (char*)"label";
 }
+
+void createVar(char* code){
+    
+}
